@@ -3,6 +3,9 @@ package application;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javax.swing.JOptionPane;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -106,20 +109,25 @@ public class ControllerStack implements Initializable{
 	
 	public void push(ActionEvent event) {
 		String str = inputStack.getText();
-		s.push(str);	
-		setText(s.size(),str);
-		inputStack.clear();
+		if(str.equals("")) {
+			JOptionPane.showMessageDialog(null,"You have not entered anything! Please input a number.");
+		}else {
+			s.push(str);	
+			setText(s.size(),str);
+			inputStack.clear();
+		}
 	}
 	
 	public void pop(ActionEvent event) {
 		s.pop();
-		int i, dem=0;
-		for(i=0; i<s.size(); i++) {
-			if(s.stack.get(i) == "" ) {
-				dem++;
+		int count = s.size() + 1;
+		for(int i = 0; i < s.size(); i++) {
+			if(s.stack.get(i).equals("")) {
+				count--;
 			}
 		}
-		clearText(dem);
+		//System.out.println(s.size());
+		clearText(count); //xoa thong tin 
 	}
 	
 	public void back() throws IOException {

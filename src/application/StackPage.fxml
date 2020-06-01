@@ -21,7 +21,7 @@
       <Button fx:id="no1" layoutX="154.0" layoutY="326.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="96.0" textAlignment="CENTER" />
       <Button fx:id="no9" layoutX="154.0" layoutY="126.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="96.0" textAlignment="CENTER" />
       <Button fx:id="no10" layoutX="154.0" layoutY="101.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="96.0" textAlignment="CENTER" />
-      <Button fx:id="no11" layoutX="154.0" layoutY="51.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="96.0" textAlignment="CENTER" />
-      <Button fx:id="no12" layoutX="154.0" layoutY="76.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="96.0" />
+      <Button fx:id="no11" layoutX="154.0" layoutY="76.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="96.0" textAlignment="CENTER" />
+      <Button fx:id="no12" layoutX="154.0" layoutY="51.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="96.0" />
    </children>
 </AnchorPane>
