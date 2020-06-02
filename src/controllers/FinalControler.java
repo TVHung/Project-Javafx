@@ -5,19 +5,29 @@ import model.Datatype;
 import model.LinkedList;
 import model.Node;
 import model.Stack;
+
+import java.awt.Button;
+import java.io.IOException;
 import application.GlobalVar;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class FinalControler {
 	@FXML
 	AnchorPane displayPane;
-	
 	@FXML
 	TextField InputField;
 	
@@ -26,16 +36,14 @@ public class FinalControler {
 	int indi;
 	int value;
 	Datatype dt;
-//	LinkedList ll = new LinkedList();
-//	AVLTree tree=new AVLTree();
-//	Stack stk = new Stack();
+	LinkedList ll = new LinkedList();
+	AVLTree tree = new AVLTree();
+	Stack stk = new Stack();
 	
-	private void setFixset(double i) {
-		this.fixset = displayPane.getHeight()*i-GlobalVar.LABEL_HEIGHT/2;
+	private void setFixset(double i) { 
+		this.fixset = displayPane.getHeight()*i-GlobalVar.LABEL_HEIGHT/2; 
 	}
-	
-	private void setOffset(double i)
-	{
+	private void setOffset(double i){
 		this.offset=displayPane.getWidth()*i;
 	}
 	public void initLL() throws InterruptedException {
@@ -106,14 +114,32 @@ public class FinalControler {
 		
 	}
 	
+	public static boolean isNumeric(String str) { //kiểm tra đầu vào có phải là số hay không
+		return str.matches("-?\\d+(\\.\\d+)?"); 
+	}
+	
 	public void insert() {
 		System.out.println("inserting ...");
-		if(indi==3)
-			{insertBtree();return;}
-		
+		String checkInput = InputField.getText();
+		if(indi==3){
+			insertBtree();
+			return;
+		}
 		try {
-			int d = Integer.parseInt(InputField.getText());
-			newnode = new Node(d);
+			if(checkInput.equals("")) {
+				Alert alert= new Alert(Alert.AlertType.INFORMATION,"You have not entered anything! Please input a number.",ButtonType.OK);
+				alert.showAndWait()	
+				.filter(response -> response == ButtonType.OK)
+				.ifPresent(response->alert.close());
+			}else if(isNumeric(checkInput) == false){
+				Alert alert= new Alert(Alert.AlertType.INFORMATION,"You must enter a number! Please enter again.",ButtonType.OK);
+				alert.showAndWait()	
+				.filter(response -> response == ButtonType.OK)
+				.ifPresent(response->alert.close());
+			}else{
+				int d = Integer.parseInt(InputField.getText());
+				newnode = new Node(d);
+			}
 			InputField.clear();
 		} catch (NumberFormatException | NullPointerException nfe) {
 			newnode = new Node();
@@ -123,8 +149,7 @@ public class FinalControler {
 			alert.showAndWait()	
 			.filter(response -> response == ButtonType.OK)
 			.ifPresent(response->alert.close());
-		}
-		else {
+		}else if(checkInput.equals("") == false) {
 			dt.AddNode(newnode);
 //			newnode.label.setLayoutX(25+(stk.nodelist.size()-1)*(25+GlobalVar.LABEL_WIDTH));
 			newnode.setLabel(newnode.form());
@@ -202,24 +227,52 @@ public class FinalControler {
 	}
 	
 	public void delete() throws InterruptedException {
-//		switch (this.indi) {
-//		case 1:
-//			deleteLL();
-//			break;
-//		case 2:
-//			deleteStk();
-//			break;
-//		case 3:
+		switch (this.indi) {
+		case 1:
+			deleteLL();
+			break;
+		case 2:
+			deleteStk();
+			break;
+		case 3:
+			deleteBtree();
+			break;
+		}
+//		if(indi==3){
 //			deleteBtree();
-//			break;
+//			return;
 //		}
-		if(indi==3)
-		{deleteBtree();return;}
+//		try {
+//			int d = Integer.parseInt(InputField.getText());
+//			InputField.clear();
+//			newnode = dt.findNode(d);
+//			
+//		} catch (NumberFormatException | NullPointerException nfe) {
+//			newnode = dt.nodelist.getFirst();
+//		}
+//		if (newnode == null) {
+//			Alert alert= new Alert(Alert.AlertType.INFORMATION,"Error data not in list",ButtonType.OK);
+//			alert.showAndWait()
+//			.filter(response -> response == ButtonType.OK)
+//			.ifPresent(response->alert.close());
+//		}
+//		else {
+//			System.out.println("Delele");
+//			dt.removeNode(newnode);
+//			dt.DelAni(newnode).setOnFinished(finishHim ->{
+//					displayPane.getChildren().remove(newnode.getLabel());
+//				}
+//			);
+//			dt.DelAni(newnode).play();
+//			//this.reArrangeLL();
+//		}
+	}
+	
+	private void deleteLL() throws InterruptedException {
 		try {
 			int d = Integer.parseInt(InputField.getText());
 			InputField.clear();
 			newnode = dt.findNode(d);
-			
 			
 		} catch (NumberFormatException | NullPointerException nfe) {
 			newnode = dt.nodelist.getFirst();
@@ -231,17 +284,19 @@ public class FinalControler {
 			.ifPresent(response->alert.close());
 		}
 		else {
+			System.out.println("Delele");
 			dt.removeNode(newnode);
 			dt.DelAni(newnode).setOnFinished(finishHim ->{
-				displayPane.getChildren().remove(newnode.getLabel());
+					displayPane.getChildren().remove(newnode.getLabel());
 				}
 			);
 			dt.DelAni(newnode).play();
 			this.reArrangeLL();
 		}
-	}
-	
-//	private void deleteLL() throws InterruptedException {
+		
+		
+		
+		
 //		try {
 //			int d = Integer.parseInt(InputField.getText());
 //			InputField.clear();
@@ -266,21 +321,46 @@ public class FinalControler {
 //			ll.DelAni(newnode).play();
 //			this.reArrangeLL();
 //		}
-//
-//	}
-//	
-//	private void deleteStk() {
-//		if(!stk.isEmpty())
-//		 {displayPane.getChildren().remove(stk.pop().getLabel());}
-//	 else 
-//	 {
+
+	}
+	
+	private void deleteStk() {
+		try {
+			int d = Integer.parseInt(InputField.getText());
+			InputField.clear();
+			newnode = dt.findNode(d);
+			
+		} catch (NumberFormatException | NullPointerException nfe) {
+			newnode = dt.nodelist.getFirst();
+		}
+		if (newnode == null) {
+			Alert alert= new Alert(Alert.AlertType.INFORMATION,"Error data not in list",ButtonType.OK);
+			alert.showAndWait()
+			.filter(response -> response == ButtonType.OK)
+			.ifPresent(response->alert.close());
+		}
+		else {
+			System.out.println("Delele");
+			dt.removeNode(newnode);
+			dt.DelAni(newnode).setOnFinished(finishHim ->{
+					displayPane.getChildren().remove(newnode.getLabel());
+				}
+			);
+			dt.DelAni(newnode).play();
+		}
+		
+		
+		
+//	if(!stk.isEmpty()){
+//		displayPane.getChildren().remove(stk.pop().getLabel());
+//	}else {
 //			Alert alert= new Alert(Alert.AlertType.INFORMATION,"Stack is empty",ButtonType.OK);
 //			alert.showAndWait()
 //			.filter(response -> response == ButtonType.OK)
 //			.ifPresent(response->alert.close());
 //		}
-//	}
-//	
+	}
+	
 
 	private void deleteBtree() {
 		System.out.println("deleteNode");
@@ -319,9 +399,30 @@ public class FinalControler {
 			move.setAutoReverse(false);
 			move.play();
 		}
-		
-		
 	}
 	
+	public void exit(ActionEvent event){
+		Platform.exit();
+	}
+	
+	public void about() throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/AboutPage.fxml"));
+		Parent root1 = (Parent) fxmlLoader.load();
+		Stage stage = new Stage();
+		stage.setScene(new Scene(root1));  
+		stage.show();
+	}
+	
+	public void tutorial() throws IOException{
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/Tutorial.fxml"));
+		Parent root1 = (Parent) fxmlLoader.load();
+		Stage stage = new Stage();
+		stage.setScene(new Scene(root1));  
+		stage.show();
+	}
+	
+//	public void ok(ActionEvent event){
+//		Platform.exit();
+//	}
 }
 

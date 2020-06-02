@@ -38,7 +38,7 @@ public class Stack extends Datatype{
 	}
 	@Override
 	public Node findNode(int d) {
-		Alert alert= new Alert(Alert.AlertType.INFORMATION,"STACK DOES NOT ALLOw DELETEING A RANDOM NODE",ButtonType.OK);
+		Alert alert= new Alert(Alert.AlertType.INFORMATION,"The Stack cannot delete the position you want!",ButtonType.OK);
 		alert.showAndWait()
 		.filter(response -> response == ButtonType.OK)
 		.ifPresent(response->alert.close());

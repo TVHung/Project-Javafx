@@ -11,19 +11,15 @@
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu mnemonicParsing="false" text="Option">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+              <MenuItem fx:id="exit" mnemonicParsing="false" onAction="#exit" text="Exit" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" onAction="#about" text="About" />
+                  <MenuItem mnemonicParsing="false" onAction="#tutorial" text="Tutorial" />
             </items>
           </Menu>
         </menus>
@@ -32,19 +28,19 @@
    <center>
       <BorderPane prefHeight="301.0" prefWidth="650.0" BorderPane.alignment="CENTER">
          <bottom>
-            <HBox prefHeight="50.0" prefWidth="650.0" style="-fx-background-color: rgb(234, 237, 237);" BorderPane.alignment="CENTER">
+            <HBox fx:id="hbFunction" prefHeight="50.0" prefWidth="650.0" style="-fx-background-color: rgb(234, 237, 237);" BorderPane.alignment="CENTER">
                <children>
                   <TextField fx:id="InputField" prefHeight="37.0" prefWidth="171.0" promptText="Input data (int)">
                      <HBox.margin>
                         <Insets left="20.0" right="25.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button mnemonicParsing="false" onAction="#insert" prefHeight="50.0" prefWidth="100.0" text="Insert">
+                  <Button fx:id="btnInsert" mnemonicParsing="false" onAction="#insert" prefHeight="50.0" prefWidth="100.0" text="Insert">
                      <HBox.margin>
                         <Insets right="25.0" />
                      </HBox.margin>
                   </Button>
-                  <Button maxHeight="75.0" mnemonicParsing="false" onAction="#delete" prefHeight="50.0" prefWidth="100.0" text="Delete">
+                  <Button fx:id="btnDelete" maxHeight="75.0" mnemonicParsing="false" onAction="#delete" prefHeight="50.0" prefWidth="100.0" text="Delete">
                      <HBox.margin>
                         <Insets right="25.0" />
                      </HBox.margin>
@@ -59,11 +55,11 @@
             <AnchorPane fx:id="displayPane" prefHeight="235.0" prefWidth="650.0" BorderPane.alignment="CENTER" />
          </center>
          <top>
-            <BorderPane prefHeight="121.0" prefWidth="650.0" style="-fx-background-color: rgb(210, 180, 222 );" BorderPane.alignment="CENTER">
+            <BorderPane prefHeight="121.0" prefWidth="650.0" style="-fx-background-color: rgb(192,192,192);" BorderPane.alignment="CENTER">
                <bottom>
                   <HBox alignment="CENTER" prefHeight="68.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#initLL" prefHeight="35.0" prefWidth="125.0" text="Linked List">
+                        <Button mnemonicParsing="false" onAction="#initStk" prefHeight="35.0" prefWidth="125.0" text="Stack">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
@@ -71,7 +67,7 @@
                               <Insets right="30.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#initStk" prefHeight="35.0" prefWidth="125.0" text="Stack">
+                        <Button mnemonicParsing="false" onAction="#initLL" prefHeight="35.0" prefWidth="125.0" text="Linked List">
                            <HBox.margin>
                               <Insets right="30.0" />
                            </HBox.margin>
@@ -83,7 +79,7 @@
                <top>
                   <HBox alignment="TOP_CENTER" prefHeight="19.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Label prefHeight="0.0" prefWidth="327.0" text="OOlt Final Project Group 7" textAlignment="CENTER">
+                        <Label alignment="CENTER" prefHeight="36.0" prefWidth="262.0" text="Mid-term project javafx" textAlignment="CENTER">
                            <font>
                               <Font size="25.0" />
                            </font>

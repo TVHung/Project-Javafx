@@ -119,13 +119,13 @@ public class Node {
 	
 	public Label form() {
 		Label label = new Label();
-		label.setBorder(new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID, new CornerRadii(0), new BorderWidths(2))));
+		label.setBorder(new Border(new BorderStroke(Color.DARKGRAY, BorderStrokeStyle.SOLID, new CornerRadii(0), new BorderWidths(2))));
 		label.setText("" + data);
 		label.setLayoutX(GlobalVar.PRIMARY_X);
 		label.setLayoutY(GlobalVar.PRIMARY_Y);
 		label.setPrefHeight(GlobalVar.LABEL_HEIGHT);
 		label.setPrefWidth(GlobalVar.LABEL_WIDTH);
-		label.setBackground(new Background(new BackgroundFill(Color.DARKVIOLET, null, null)));
+		label.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
 		label.setFont(new Font(30));
 		label.setAlignment(Pos.CENTER);
 		

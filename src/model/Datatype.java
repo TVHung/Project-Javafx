@@ -8,7 +8,7 @@ import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 
 public abstract class Datatype {
-	private static final int MAX_SIZE = 7;
+	private static final int MAX_SIZE = 6;
 	public java.util.LinkedList<Node> nodelist = new java.util.LinkedList<Node>();
 	Node tmp;
 		
