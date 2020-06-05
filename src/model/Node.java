@@ -196,48 +196,25 @@ public class Node {
 		return label;
 	}
 	
-	public Label form1() {
+	public Label form(int [] key, int k) {
 		Label label = new Label();
 		label.setBorder(new Border(new BorderStroke(Color.DARKGRAY, BorderStrokeStyle.SOLID, new CornerRadii(0), new BorderWidths(2))));
-		label.setText("" + data);
-		label.setLayoutX(100);
-		label.setLayoutY(100);
+		String str = "";
+		for( int i = 0; i < k; i++) {
+			if(i == k -1) str += key[i];
+			else str += key[i] + " | ";
+		}
+		label.setText(str);
+		label.setLayoutX(-100);
+		label.setLayoutY(10);
 		label.setPrefHeight(GlobalVar.LABEL_HEIGHT);
-		label.setPrefWidth(GlobalVar.LABEL_WIDTH);
+		label.setPrefWidth(GlobalVar.LABEL_WIDTH + 100);
 		label.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
-		label.setFont(new Font(30));
+		label.setFont(new Font(20));
 		label.setAlignment(Pos.CENTER);
 		
 		return label;
 	}
 	
-	public Label form2() {
-		Label label = new Label();
-		label.setBorder(new Border(new BorderStroke(Color.DARKGRAY, BorderStrokeStyle.SOLID, new CornerRadii(0), new BorderWidths(2))));
-		label.setText("" + data);
-		label.setLayoutX(GlobalVar.PRIMARY_X);
-		label.setLayoutY(GlobalVar.PRIMARY_Y);
-		label.setPrefHeight(GlobalVar.LABEL_HEIGHT);
-		label.setPrefWidth(GlobalVar.LABEL_WIDTH);
-		label.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
-		label.setFont(new Font(30));
-		label.setAlignment(Pos.CENTER);
-		
-		return label;
-	}
-	
-	public Label form(int [] key) {
-		Label label = new Label();
-		label.setBorder(new Border(new BorderStroke(Color.DARKGRAY, BorderStrokeStyle.SOLID, new CornerRadii(0), new BorderWidths(2))));
-		label.setLayoutX(75);
-		label.setLayoutY(75);
-		label.setPrefHeight(GlobalVar.LABEL_HEIGHT);
-		label.setPrefWidth(GlobalVar.LABEL_WIDTH);
-		label.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
-		label.setFont(new Font(30));
-		label.setAlignment(Pos.CENTER);
-		
-		return label;
-	}
 
 }

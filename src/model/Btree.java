@@ -1,7 +1,5 @@
 package model;
 
-import java.io.Console;
-
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
@@ -60,6 +58,7 @@ private Node root;
 	
 	public void insert(int key) {
 		Node r = root;
+		AddNode(r);
 		if(r.getN() ==  2 * T - 1) {
 			Node s =  new Node();
 			root = s;
@@ -315,9 +314,10 @@ private Node root;
 	}
 	
 	
-	public void drawAni(Node x, double offsetX, double offsetY) {
-//		if(nodelist.size() == 0) return;
-		x.setLabel(x.form(x.getKey()));
+	public void drawAni(java.util.LinkedList<Node> nodelist, double offsetX, double offsetY) {
+		if(nodelist.size() == 0) return;
+		Node  x = nodelist.get(0);
+		x.setLabel(x.form(x.getKey(), 2*T -1));
 		AddAni(x, offsetX, offsetY).play();
 	}
 	

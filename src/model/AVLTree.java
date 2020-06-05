@@ -27,8 +27,7 @@ public class AVLTree extends Datatype
     {
         root = insert(data, root);
     }
-    /* Function to get height of node */
-    private int height(Node t )
+    /* Function to get height of node */    private int height(Node t )
     {
         return t == null ? -1 : t.getHeight();
     }
@@ -162,90 +161,58 @@ public class AVLTree extends Datatype
 	{
 		deleteNode(root,value);
 	}
-	 public Node deleteNode(Node root, int value) {
-	        // STEP 1: PERFORM STANDARD BST DELETE
-
+	public Node deleteNode(Node root, int value) {
 	        if (root == null)
 	            return root;
-
-	        // If the value to be deleted is smaller than the root's value,
-	        // then it lies in left subtree
+	        
 	        if ( value < root.getData() )
 	            root.setLeft( deleteNode(root.getLeft(), value));
-
-	        // If the value to be deleted is greater than the root's value,
-	        // then it lies in right subtree
+	        
 	        else if( value > root.getData() )
 	            root.setRight( deleteNode(root.getRight(), value));
 
-	        // if value is same as root's value, then This is the node
-	        // to be deleted
 	        else {
-	            // node with only one child or no child
 	            if( (root.getLeft() == null) || (root.getRight() == null) ) {
 
-	                Node temp;
+	                Node temp = null;
 	                if (root.getLeft() != null)
 	                        temp = root.getLeft();
 	                else
 	                    temp = root.getRight();
 
-	                // No child case
 	                if(temp == null) {
 	                    temp = root;
 	                    root = null;
 	                }
-	                else // One child case
-	                    root = temp; // Copy the contents of the non-empty child
-
-	              
+	                else 
+	                    root = temp; 
 	            }
 	            else {
-	                // node with two children: Get the inorder successor (smallest
-	                // in the right subtree)
-	                Node temp = minValueNode(root.getRight());
-
-	                // Copy the inorder successor's data to this node
+	            	Node temp = minValueNode(root.getRight());
 	                root.setData( temp.getData()) ;
-
-	                // Delete the inorder successor
 	                root.setRight (deleteNode(root.getRight(), temp.getData()));
 	            }
 	        }
-
-	        // If the tree had only one node then return
 	        if (root == null)
 	            return root;
-
-	        // STEP 2: UPDATE HEIGHT OF THE CURRENT NODE
 	        root.setHeight( Math.max(height(root.getLeft()), height(root.getRight())) + 1);
-
-	        // STEP 3: GET THE BALANCE FACTOR OF THIS NODE (to check whether
-	        //  this node became unbalanced)
 	        int balance = getBalance(root);
-
-	        // If this node becomes unbalanced, then there are 4 cases
-
-	        // Left Left Case
 	        if (balance > 1 && getBalance(root.getLeft()) >= 0)
 	            this.root= rotateWithLeftChild(root);
 
-	        // Left Right Case
 	        if (balance > 1 && getBalance(root.getLeft()) < 0) {
 	            this.root= doubleWithLeftChild(root);
 	        }
 
-	        // Right Right Case
 	        if (balance < -1 && getBalance(root.getRight()) <= 0)
 	             this.root=rotateWithRightChild(root);
 
-	        // Right Left Case
 	        if (balance < -1 && getBalance(root.getRight()) > 0) {
 	        	this.root=doubleWithRightChild(root);
 	        }
-
 	        return root;
 	    }
+	 
 	 private int getBalance(Node N) {
 	        if (N == null)
 	            return 0;
@@ -253,38 +220,47 @@ public class AVLTree extends Datatype
 	    }
 	public void drawNotAni(java.util.LinkedList<Node> nodelist1,double offsetX, double offsetY)
 	{
-		if (nodelist1.size()==0) return;
+		if (nodelist1.size()==0) 
+			return;
 		java.util.LinkedList<Node> nodelist2=new java.util.LinkedList<Node>();
 		java.util.LinkedList<Node> nodelist3=new java.util.LinkedList<Node>();
 		nodelist1.get(0).setLabel(nodelist1.get(0).form());
-		AddAni(nodelist1.get(0),offsetX,offsetY).play();
-		for (int i=1;i<nodelist1.size();i++) {
-			if(nodelist1.get(i).getData()>nodelist1.get(0).getData()) nodelist2.add(nodelist1.get(i));
-			else nodelist3.add(nodelist1.get(i));
-		}
-		if(nodelist2.size() == 1 )
-		{
-			drawNotAni(nodelist2,offsetX+95,offsetY+70);
-			Arrow  arrowr=new Arrow(offsetX+100/2,offsetY+50,offsetX+140,offsetY+70);
-			nodelist1.get(0).setArrowr(arrowr);
-		} else 
-			if(nodelist2.size()!=0)
-		{
-			drawNotAni(nodelist2,offsetX+160,offsetY+110);
-		    Arrow  arrowr=new Arrow(offsetX+100/2,offsetY+50,offsetX+200,offsetY+110);
-		    nodelist1.get(0).setArrowr(arrowr);
-		 }
 		
-		if(nodelist3.size() == 1)
-		{
-			drawNotAni(nodelist3,offsetX-95,offsetY+70);
-			Arrow arrowl=new Arrow(offsetX  + 100/2,offsetY+50,offsetX-55,offsetY+70);
+		AddAni(nodelist1.get(0),offsetX,offsetY).play();
+		
+		for (int i = 1 ; i < nodelist1.size() ; i++) {
+			
+			if(nodelist1.get(i).getData() > nodelist1.get(0).getData()) {
+				nodelist2.add(nodelist1.get(i));				
+			}else 
+				nodelist3.add(nodelist1.get(i));
+			
+		}
+		if(nodelist2.size() == 1 ){
+			
+			drawNotAni(nodelist2, offsetX + 95, offsetY + 70);
+			Arrow  arrowr=new Arrow(offsetX + 100/2, offsetY + 50, offsetX + 140, offsetY + 70);
+			nodelist1.get(0).setArrowr(arrowr);
+			
+		} else if(nodelist2.size() != 0){
+			
+			drawNotAni(nodelist2, offsetX + 160, offsetY + 110);
+		    Arrow  arrowr=new Arrow(offsetX+100/2, offsetY + 50, offsetX + 200, offsetY + 110);
+		    nodelist1.get(0).setArrowr(arrowr);
+		    
+		}
+		if(nodelist3.size() == 1){
+			
+			drawNotAni(nodelist3, offsetX - 95, offsetY + 70);
+			Arrow arrowl=new Arrow(offsetX  + 100/2, offsetY+50, offsetX-55, offsetY+70);
 			nodelist1.get(0).setArrowl(arrowl);
-		}else 
-		if(nodelist3.size()!=0) {
-		drawNotAni(nodelist3,offsetX-160,offsetY+110);
-		Arrow arrowl=new Arrow(offsetX + 100/2,offsetY+50,offsetX-120,offsetY+110);
-		nodelist1.get(0).setArrowl(arrowl);
+			
+		}else if(nodelist3.size() != 0) {
+			
+			drawNotAni(nodelist3, offsetX - 160, offsetY + 110);
+			Arrow arrowl=new Arrow(offsetX + 100/2, offsetY+50, offsetX-120, offsetY+110);
+			nodelist1.get(0).setArrowl(arrowl);
+			
 		}
 	}
 public SequentialTransition AddAni(Node node, double offsetX, double offsetY) {
@@ -298,7 +274,7 @@ public SequentialTransition AddAni(Node node, double offsetX, double offsetY) {
 		moveX.setAutoReverse(false);
 		
 		TranslateTransition moveY = new TranslateTransition();
-		moveY.setDuration(Duration.millis(1));
+		moveY.setDuration(Duration.millis(0));
 		moveY.setNode(node.getLabel());
 		moveY.setToY(offsetY);
 		moveY.setAutoReverse(false);

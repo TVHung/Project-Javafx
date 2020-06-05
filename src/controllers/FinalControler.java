@@ -50,15 +50,19 @@ public class FinalControler {
 	private void setFixset(double i) { 
 		this.fixset = displayPane.getHeight()*i-GlobalVar.LABEL_HEIGHT/2; 
 	}
+	
 	private void setOffset(double i){
 		this.offset = displayPane.getWidth()*i;
 	}
+	
 	public void initLL() throws InterruptedException {	
 		btnInsert.setVisible(false);
 		btnDelete.setVisible(false);
 
 		menuInsert.setVisible(true);
 		menuDelete.setVisible(true);
+		
+		inputIndex.setVisible(true);
 		
 		dt = new LinkedList();
 		this.indi = 1;
@@ -84,6 +88,8 @@ public class FinalControler {
 		menuInsert.setVisible(false);
 		menuDelete.setVisible(false);
 		
+		inputIndex.setVisible(false);
+		
 		dt = new Stack();
 		this.indi = 2;
 		System.out.println("Stack");
@@ -94,12 +100,15 @@ public class FinalControler {
 	public void initBtree() {
 		
 	}
+	
 	public void initAvl() {
 		btnInsert.setVisible(true);
 		btnDelete.setVisible(true);
 		
 		menuInsert.setVisible(false);
 		menuDelete.setVisible(false);
+		
+		inputIndex.setVisible(false);
 		
 		dt = new AVLTree();
     	this.indi = 3;
@@ -128,11 +137,9 @@ public class FinalControler {
 				if(dt.nodelist.get(i).getArrowr()!=null&&dt.nodelist.get(i).getRight()!=null)
 				displayPane.getChildren().add(dt.nodelist.get(i).getArrowr());
 			}
-
-		
 	}
 	
-	public static boolean isNumeric(String str) { //kiểm tra đầu vào có phải là số hay không
+	public static boolean isNumeric(String str) { //kiem tra dau vao co phai so khong
 		return str.matches("-?\\d+(\\.\\d+)?"); 
 	}
 	
@@ -161,6 +168,7 @@ public class FinalControler {
 		.ifPresent(response->alert.close());
 		InputField.clear();
 	}
+	
 	private void insertStack() {
 		String checkInput = InputField.getText();
 		if(checkInput.equals("")) {
@@ -190,29 +198,38 @@ public class FinalControler {
 		}
 		InputField.clear();
 	}
+	
 	private void insertBtree() {
 		System.out.println("insertBtree");
-		try {
+		String checkInput = InputField.getText();
+		if(checkInput.equals("")) {
+			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You have not entered anything! Please input a number.",ButtonType.OK);
+			alert.showAndWait()	
+			.filter(response -> response == ButtonType.OK)
+			.ifPresent(response->alert.close());
+		}else if(isNumeric(checkInput) == false){
+			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You must enter a number! Please enter again.",ButtonType.OK);
+			alert.showAndWait()	
+			.filter(response -> response == ButtonType.OK)
+			.ifPresent(response->alert.close());
+		}else {
 			int d = Integer.parseInt(InputField.getText());
 			newnode = new Node(d);
 			InputField.clear();
-		} catch (NumberFormatException | NullPointerException nfe) {
-			
+			displayPane.getChildren().clear();
+			((AVLTree)dt).insert(newnode.getData());
+			((AVLTree)dt).nodelist.clear();
+			((AVLTree)dt).preorder();
+			((AVLTree)dt).drawNotAni(dt.nodelist,offset,fixset);
+			for(int i=0;i<dt.nodelist.size();i++) {
+				displayPane.getChildren().add(dt.nodelist.get(i).getLabel());
+				if(dt.nodelist.get(i).getArrowl()!=null&&dt.nodelist.get(i).getLeft()!=null)
+					displayPane.getChildren().add(dt.nodelist.get(i).getArrowl());
+				if(dt.nodelist.get(i).getArrowr()!=null&&dt.nodelist.get(i).getRight()!=null)
+					displayPane.getChildren().add(dt.nodelist.get(i).getArrowr());
+			}
 		}
-		displayPane.getChildren().clear();
-		((AVLTree)dt).insert(newnode.getData());
-		((AVLTree)dt).nodelist.clear();
-		((AVLTree)dt).preorder();
-		((AVLTree)dt).drawNotAni(dt.nodelist,offset,fixset);
-		for(int i=0;i<dt.nodelist.size();i++) {
-			displayPane.getChildren().add(dt.nodelist.get(i).getLabel());
-			if(dt.nodelist.get(i).getArrowl()!=null&&dt.nodelist.get(i).getLeft()!=null)
-			displayPane.getChildren().add(dt.nodelist.get(i).getArrowl());
-			if(dt.nodelist.get(i).getArrowr()!=null&&dt.nodelist.get(i).getRight()!=null)
-			displayPane.getChildren().add(dt.nodelist.get(i).getArrowr());
-		}
-
-		
+		InputField.clear();
 	}
 	
 	public void insertHead() {
@@ -236,7 +253,6 @@ public class FinalControler {
 			int d = Integer.parseInt(InputField.getText());
 			newnode = new Node(d);
 			dt.nodelist.addFirst(newnode);
-			System.out.println(dt.nodelist.get(dt.sizeDt() - 1));
 			newnode.setLabel(newnode.form());
 			displayPane.getChildren().add(newnode.getLabel());
 			fixset = displayPane.getWidth()/2 - GlobalVar.LABEL_WIDTH/2;
@@ -268,7 +284,6 @@ public class FinalControler {
 			int d = Integer.parseInt(InputField.getText());
 			newnode = new Node(d);
 			dt.nodelist.addLast(newnode);
-			System.out.println(dt.nodelist.get(dt.sizeDt() - 2));
 			newnode.setLabel(newnode.form());
 			displayPane.getChildren().add(newnode.getLabel());
 			fixset = displayPane.getWidth()/2 - GlobalVar.LABEL_WIDTH/2;
@@ -370,19 +385,19 @@ public class FinalControler {
 	
 	public void deleteAnyPosition() {
 		String checkInput = InputField.getText();
-		if(checkInput.equals("") == true) {
-			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You can only input one field.",ButtonType.OK);
+		String checkInputIndex = inputIndex.getText();
+		
+		if((checkInput.equals("") == true && checkInputIndex.equals("") == true) || (checkInput.equals("") == false && checkInputIndex.equals("") == false)) {
+			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You must enter 1 field completely.",ButtonType.OK);
 			alert.showAndWait()	
 			.filter(response -> response == ButtonType.OK)
 			.ifPresent(response->alert.close());
-			InputField.clear();
-		}else if(isNumeric(checkInput) == false){
+		}else if((isNumeric(checkInput) == false && checkInputIndex.equals("") == true) || (checkInput.equals("") == true && isNumeric(checkInputIndex) == false)){
 			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You must enter a number! Please enter again.",ButtonType.OK);
 			alert.showAndWait()	
 			.filter(response -> response == ButtonType.OK)
 			.ifPresent(response->alert.close());
-			InputField.clear();
-		}else{		
+		}else if(checkInput.equals("") == false && checkInputIndex.equals("") == true){		
 			int d = Integer.parseInt(InputField.getText());
 			int findIndex = dt.findIndexNode(d);
 			if(findIndex == -1) {
@@ -401,15 +416,25 @@ public class FinalControler {
 				dt.DelAni(newnode).play();
 				this.reArrangeLL();
 			}
-			InputField.clear();
+		}else if(checkInput.equals("") == true && checkInputIndex.equals("") == false) {
+			int d = Integer.parseInt(checkInputIndex);
+			newnode = dt.nodelist.get(d);
+			System.out.println("Delele");
+			dt.removeNode(newnode);
+			dt.DelAni(newnode).setOnFinished(finishHim ->{
+				displayPane.getChildren().remove(newnode.getLabel());
+			}
+					);
+			dt.DelAni(newnode).play();
+			this.reArrangeLL();
 		}
-		
+		InputField.clear();
+		inputIndex.clear();
 	}
 	
 	public void delete() throws InterruptedException {
 		switch (this.indi) {
 		case 1:
-			deleteLL();
 			break;
 		case 2:
 			deleteStk();
@@ -418,35 +443,6 @@ public class FinalControler {
 			deleteBtree();
 			break;
 		}
-	}
-	
-	private void deleteLL() throws InterruptedException {
-		try {
-			int d = Integer.parseInt(InputField.getText());
-			InputField.clear();
-			newnode = dt.findNode(d);
-			
-		} catch (NumberFormatException | NullPointerException nfe) {
-			newnode = dt.nodelist.getFirst();
-		}
-		if (newnode == null) {
-			Alert alert= new Alert(Alert.AlertType.INFORMATION,"Error data not in list",ButtonType.OK);
-			alert.showAndWait()
-			.filter(response -> response == ButtonType.OK)
-			.ifPresent(response->alert.close());
-		}
-		else {
-			System.out.println("Delele");
-			dt.removeNode(newnode);
-			dt.DelAni(newnode).setOnFinished(finishHim ->{
-					displayPane.getChildren().remove(newnode.getLabel());
-				}
-			);
-			dt.DelAni(newnode).play();
-			this.reArrangeLL();
-		}
-		
-
 	}
 	
 	private void deleteStk() {
@@ -473,30 +469,40 @@ public class FinalControler {
 		}
 	}
 	
-
-	private void deleteBtree() {
+	private void deleteBtree() {  //mỗi lần xóa sẽ built lại từ đầu
 		System.out.println("deleteNode");
-		try {
+		String checkInput = InputField.getText();
+		if(checkInput.equals("")) {
+			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You have not entered anything! Please input a number.",ButtonType.OK);
+			alert.showAndWait()	
+			.filter(response -> response == ButtonType.OK)
+			.ifPresent(response->alert.close());
+		}else if(isNumeric(checkInput) == false){
+			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You must enter a number! Please enter again.",ButtonType.OK);
+			alert.showAndWait()	
+			.filter(response -> response == ButtonType.OK)
+			.ifPresent(response->alert.close());
+		}else {
 			int d = Integer.parseInt(InputField.getText());
 			newnode = new Node(d);
 			InputField.clear();
-		} catch (NumberFormatException | NullPointerException nfe) {
-			
+			displayPane.getChildren().clear(); 			//lệnh xóa toàn bộ cây
+			((AVLTree)dt).delete(newnode.getData());
+			dt.nodelist.clear();
+			((AVLTree)dt).preorder();
+			((AVLTree)dt).drawNotAni(dt.nodelist,offset,fixset);    //cập nhật lại cây khi xóa
+			System.out.println(dt.nodelist.size());
+			for(int i=0;i<dt.nodelist.size();i++) {
+				displayPane.getChildren().add(dt.nodelist.get(i).getLabel());
+				
+				if(dt.nodelist.get(i).getArrowl() != null && dt.nodelist.get(i).getLeft() != null)
+					displayPane.getChildren().add(dt.nodelist.get(i).getArrowl());
+				
+				if(dt.nodelist.get(i).getArrowr() != null && dt.nodelist.get(i).getRight() != null)
+					displayPane.getChildren().add(dt.nodelist.get(i).getArrowr());
+			}
 		}
-		displayPane.getChildren().clear();
-		((AVLTree)dt).delete(newnode.getData());
-		dt.nodelist.clear();
-		((AVLTree)dt).preorder();
-		((AVLTree)dt).drawNotAni(dt.nodelist,offset,fixset);
-		System.out.println(dt.nodelist.size());
-		for(int i=0;i<dt.nodelist.size();i++) {
-			displayPane.getChildren().add(dt.nodelist.get(i).getLabel());
-			if(dt.nodelist.get(i).getArrowl()!=null&&dt.nodelist.get(i).getLeft()!=null)
-			displayPane.getChildren().add(dt.nodelist.get(i).getArrowl());
-			if(dt.nodelist.get(i).getArrowr()!=null&&dt.nodelist.get(i).getRight()!=null)
-			displayPane.getChildren().add(dt.nodelist.get(i).getArrowr());
-		}
-
+		InputField.clear();
 	}
 	
 	public void reArrangeLL() {
@@ -527,9 +533,6 @@ public class FinalControler {
 		}
 	}
 
-
-
-	
 	public void exit(ActionEvent event){
 		Platform.exit();
 	}
