@@ -1,10 +1,7 @@
 package model;
 
-import java.util.LinkedList;
-
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
-import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 
 public abstract class Datatype {
@@ -38,7 +35,11 @@ public abstract class Datatype {
 	public abstract void removeNode(Node node);
 
 	public boolean isEmpty() {
-		return nodelist.isEmpty();
+		return (nodelist.size() == 0);
+	}
+	
+	public int sizeDt() {
+		return nodelist.size();
 	}
 
 	public boolean isFull() {
@@ -46,7 +47,12 @@ public abstract class Datatype {
 	}
 
 	public abstract Node findNode(int d);
+	public abstract int findIndexNode(int d);
 
+	public SequentialTransition AddAniFirst(Node node, double displayWidth, double displayHeight) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 

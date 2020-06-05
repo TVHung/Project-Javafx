@@ -22,10 +22,10 @@ public class Stack extends Datatype{
 		return tmp;
 	}
 
-	private Node peek() {
-		tmp = nodelist.peek();
-		return tmp;
-	}
+//	private Node peek() {
+//		tmp = nodelist.peek();
+//		return tmp;
+//	}
 	
 	@Override
 	public void AddNode(Node newnode) {
@@ -44,7 +44,13 @@ public class Stack extends Datatype{
 		.ifPresent(response->alert.close());
 		return null;
 	}
-
+	
+	@Override
+	public int findIndexNode(int d) {
+		
+		return 0;
+	}
+	
 	private double setOffsetX(Double displayWidth) {
 		return displayWidth/2 - GlobalVar.LABEL_WIDTH/2;
 	}

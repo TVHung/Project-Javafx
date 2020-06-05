@@ -262,13 +262,28 @@ public class AVLTree extends Datatype
 			if(nodelist1.get(i).getData()>nodelist1.get(0).getData()) nodelist2.add(nodelist1.get(i));
 			else nodelist3.add(nodelist1.get(i));
 		}
-		if(nodelist2.size()!=0)
-		{drawNotAni(nodelist2,offsetX+150,offsetY+100);
-		Arrow arrowr=new Arrow(offsetX+75/2,offsetY+50,offsetX+150,offsetY+100);
-		nodelist1.get(0).setArrowr(arrowr);}
+		if(nodelist2.size() == 1 )
+		{
+			drawNotAni(nodelist2,offsetX+95,offsetY+70);
+			Arrow  arrowr=new Arrow(offsetX+100/2,offsetY+50,offsetX+140,offsetY+70);
+			nodelist1.get(0).setArrowr(arrowr);
+		} else 
+			if(nodelist2.size()!=0)
+		{
+			drawNotAni(nodelist2,offsetX+160,offsetY+110);
+		    Arrow  arrowr=new Arrow(offsetX+100/2,offsetY+50,offsetX+200,offsetY+110);
+		    nodelist1.get(0).setArrowr(arrowr);
+		 }
+		
+		if(nodelist3.size() == 1)
+		{
+			drawNotAni(nodelist3,offsetX-95,offsetY+70);
+			Arrow arrowl=new Arrow(offsetX  + 100/2,offsetY+50,offsetX-55,offsetY+70);
+			nodelist1.get(0).setArrowl(arrowl);
+		}else 
 		if(nodelist3.size()!=0) {
-		drawNotAni(nodelist3,offsetX-150,offsetY+100);
-		Arrow arrowl=new Arrow(offsetX,offsetY+50,offsetX-150,offsetY+100);
+		drawNotAni(nodelist3,offsetX-160,offsetY+110);
+		Arrow arrowl=new Arrow(offsetX + 100/2,offsetY+50,offsetX-120,offsetY+110);
 		nodelist1.get(0).setArrowl(arrowl);
 		}
 	}
@@ -299,6 +314,11 @@ public void AddNode(Node node) {
 public void removeNode(Node node) {
 	nodelist.remove(node);
 
+}
+@Override
+public int findIndexNode(int d) {
+	// TODO Auto-generated method stub
+	return 0;
 }
 }
 

@@ -18,12 +18,32 @@ import javafx.scene.text.Font;
 public class Node {
 	private int data;
 	private int height;
-	private Node next; //for stack and ll
-	private Node left, right; //for tree
-//	public int place ;
-	private Label label;
-	private Arrow arrowl;
-	private Arrow arrowr;
+	
+	//for stack and link list
+	private Node next; 			
+	
+	//for AVL tree
+	private Node left;
+	private Node right;	
+	
+	//for BalancedTree
+	private int n;
+	private int key[];
+	private Node child[];
+	private boolean leaf;
+	public int FindB(int k) {
+		for (int i = 0; i < this.n; i++) {
+			if(this.key[i] == k) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	//for draw
+	private Label label;		
+	private Arrow arrowl;		
+	private Arrow arrowr;		
 	
 	private Random 	rand = new Random();
 	
@@ -34,8 +54,6 @@ public class Node {
 	public void setData(int data) {
 		this.data = data;
 	}
-
-	
 
 	public Arrow getArrowl() {
 		return arrowl;
@@ -92,30 +110,76 @@ public class Node {
 	public void setHeight(int height) {
 		this.height = height;
 	}
+	
+	public int getN() {
+		return n;
+	}
+
+	public void setN(int n) {
+		this.n = n;
+	}
+
+	public int getKey(int i) {
+		return key[i];
+	}
+	
+	public int [] getKey() {
+		return key;
+	}
+
+	public void setKey(int i, int m) {
+		this.key[i] = m;
+	}
+	
+	public void setKey(int [] key) {
+		this.key = key;
+	}
+
+	public Node getChild(int i) {
+		return child[i];
+	}
+
+	public void setChild(int i, Node b) {
+		this.child[i] = b;
+	}
+	
+	public void setChild(Node [] child) {
+		this.child = child;
+	}
+
+	public boolean isLeaf() {
+		return leaf;
+	}
+
+	public void setLeaf(boolean leaf) {
+		this.leaf = leaf;
+	}
 
 	public Node() {
-		// TODO Auto-generated constructor stub
 		super();
-		left = null;
-        right = null;
-        height = 0;
-        arrowl= null;
-    	arrowr = null;
 		data = rand.nextInt(100);
+		this.height = 0;
+		this.next = null;
+		this.left = null;
+		this.right = null;
 		this.label = form();
-
+		this.arrowl = null;
+		this.arrowr = null;
 	}
 
 	public Node(int data) {
 		super();
-		left = null;
-        right = null;
-        height = 0;
-        arrowl= null;
-    	arrowr = null;
 		this.data = data;
+		this.height = 0;
+		this.next = null;
+		this.left = null;
+		this.right = null;
 		this.label = form();
+		this.arrowl = null;
+		this.arrowr = null;
 	}
+	
+	
 	
 	public Label form() {
 		Label label = new Label();
@@ -123,6 +187,50 @@ public class Node {
 		label.setText("" + data);
 		label.setLayoutX(GlobalVar.PRIMARY_X);
 		label.setLayoutY(GlobalVar.PRIMARY_Y);
+		label.setPrefHeight(GlobalVar.LABEL_HEIGHT);
+		label.setPrefWidth(GlobalVar.LABEL_WIDTH);
+		label.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
+		label.setFont(new Font(30));
+		label.setAlignment(Pos.CENTER);
+		
+		return label;
+	}
+	
+	public Label form1() {
+		Label label = new Label();
+		label.setBorder(new Border(new BorderStroke(Color.DARKGRAY, BorderStrokeStyle.SOLID, new CornerRadii(0), new BorderWidths(2))));
+		label.setText("" + data);
+		label.setLayoutX(100);
+		label.setLayoutY(100);
+		label.setPrefHeight(GlobalVar.LABEL_HEIGHT);
+		label.setPrefWidth(GlobalVar.LABEL_WIDTH);
+		label.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
+		label.setFont(new Font(30));
+		label.setAlignment(Pos.CENTER);
+		
+		return label;
+	}
+	
+	public Label form2() {
+		Label label = new Label();
+		label.setBorder(new Border(new BorderStroke(Color.DARKGRAY, BorderStrokeStyle.SOLID, new CornerRadii(0), new BorderWidths(2))));
+		label.setText("" + data);
+		label.setLayoutX(GlobalVar.PRIMARY_X);
+		label.setLayoutY(GlobalVar.PRIMARY_Y);
+		label.setPrefHeight(GlobalVar.LABEL_HEIGHT);
+		label.setPrefWidth(GlobalVar.LABEL_WIDTH);
+		label.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
+		label.setFont(new Font(30));
+		label.setAlignment(Pos.CENTER);
+		
+		return label;
+	}
+	
+	public Label form(int [] key) {
+		Label label = new Label();
+		label.setBorder(new Border(new BorderStroke(Color.DARKGRAY, BorderStrokeStyle.SOLID, new CornerRadii(0), new BorderWidths(2))));
+		label.setLayoutX(75);
+		label.setLayoutY(75);
 		label.setPrefHeight(GlobalVar.LABEL_HEIGHT);
 		label.setPrefWidth(GlobalVar.LABEL_WIDTH);
 		label.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));

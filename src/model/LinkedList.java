@@ -24,6 +24,9 @@ public class LinkedList extends Datatype{
 		AddNode(node);
 	}
 	
+	public void addFirst(Node node) {
+		nodelist.addFirst(node);
+	}
 	
 	public void AddNode() {
 		Node node = new Node();
@@ -33,11 +36,6 @@ public class LinkedList extends Datatype{
 	
 	public void AddNode(Node node) {
 		nodelist.add(node);
-//		if (head == null) head = node;
-//		else {
-//			node.setNext(head);
-//			head = node;
-//		}
 	}
 	
 	public void removeNode(Node node) {
@@ -53,11 +51,20 @@ public class LinkedList extends Datatype{
 	}
 	
 	public Node findNode(int data) {
-		for (int i=0;i<nodelist.size();i++) {
+		for (int i = 0 ; i < nodelist.size() ; i++) {
 			tmp = nodelist.get(i);
 			if (tmp.getData() == data) return tmp;
 		}
 		return null;
+	}
+	
+	@Override
+	public int findIndexNode(int d) {
+		for (int i = 0 ; i < nodelist.size() ; i++) {
+			tmp = nodelist.get(i);
+			if (tmp.getData() == d) return i;
+		}
+		return -1;
 	}
 
 	@Override
@@ -80,4 +87,27 @@ public class LinkedList extends Datatype{
 		st.getChildren().addAll(moveX,moveY);
 		return st;
 	}
+	
+	@Override 
+	public SequentialTransition AddAniFirst(Node node, double displayWidth, double displayHeight) {
+		
+		SequentialTransition st = new SequentialTransition();
+		
+		TranslateTransition moveX = new TranslateTransition();
+		moveX.setDuration(Duration.millis(1000));
+		moveX.setNode(node.getLabel());
+		moveX.setToX(25);     				//vi tri cua label moi se den
+		moveX.setAutoReverse(false);
+		TranslateTransition moveY = new TranslateTransition();
+		moveY.setDuration(Duration.millis(1000));
+		moveY.setNode(node.getLabel());
+		moveY.setToY(setOffsetY(displayHeight,0.5));
+		moveY.setAutoReverse(false);
+
+		
+		st.getChildren().addAll(moveX,moveY);
+
+		return st;
+	}
+
 }
