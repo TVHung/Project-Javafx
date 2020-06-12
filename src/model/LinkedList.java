@@ -30,7 +30,6 @@ public class LinkedList extends Datatype{
 	
 	public void AddNode() {
 		Node node = new Node();
-//		node.place = offset;
 		AddNode(node);
 	}
 	
@@ -40,14 +39,6 @@ public class LinkedList extends Datatype{
 	
 	public void removeNode(Node node) {
 		nodelist.remove(node);
-//		if (head != node) {
-//			Node tmp = new Node();
-//			while (tmp.getNext() != node) tmp = tmp.getNext();
-//			tmp.setNext(node.getNext());
-//		}
-//		else {
-//			head = head.getNext();
-//		}
 	}
 	
 	public Node findNode(int data) {
@@ -88,26 +79,26 @@ public class LinkedList extends Datatype{
 		return st;
 	}
 	
-	@Override 
-	public SequentialTransition AddAniFirst(Node node, double displayWidth, double displayHeight) {
-		
-		SequentialTransition st = new SequentialTransition();
-		
-		TranslateTransition moveX = new TranslateTransition();
-		moveX.setDuration(Duration.millis(1000));
-		moveX.setNode(node.getLabel());
-		moveX.setToX(25);     				//vi tri cua label moi se den
-		moveX.setAutoReverse(false);
-		TranslateTransition moveY = new TranslateTransition();
-		moveY.setDuration(Duration.millis(1000));
-		moveY.setNode(node.getLabel());
-		moveY.setToY(setOffsetY(displayHeight,0.5));
-		moveY.setAutoReverse(false);
-
-		
-		st.getChildren().addAll(moveX,moveY);
-
-		return st;
-	}
+//	@Override 
+//	public SequentialTransition AddAniFirst(Node node, double displayWidth, double displayHeight) {
+//		
+//		SequentialTransition st = new SequentialTransition();
+//		
+//		TranslateTransition moveX = new TranslateTransition();
+//		moveX.setDuration(Duration.millis(1000));
+//		moveX.setNode(node.getLabel());
+//		moveX.setToX(25);     				//vi tri cua label moi se den
+//		moveX.setAutoReverse(false);
+//		TranslateTransition moveY = new TranslateTransition();
+//		moveY.setDuration(Duration.millis(1000));
+//		moveY.setNode(node.getLabel());
+//		moveY.setToY(setOffsetY(displayHeight,0.5));
+//		moveY.setAutoReverse(false);
+//
+//		
+//		st.getChildren().addAll(moveX,moveY);
+//
+//		return st;
+//	}
 
 }

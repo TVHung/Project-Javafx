@@ -1,6 +1,7 @@
 package controllers;
 
 import model.AVLTree;
+import model.Btree;
 import model.Datatype;
 import model.LinkedList;
 import model.Node;
@@ -50,11 +51,9 @@ public class FinalControler {
 	private void setFixset(double i) { 
 		this.fixset = displayPane.getHeight()*i-GlobalVar.LABEL_HEIGHT/2; 
 	}
-	
 	private void setOffset(double i){
 		this.offset = displayPane.getWidth()*i;
 	}
-	
 	public void initLL() throws InterruptedException {	
 		btnInsert.setVisible(false);
 		btnDelete.setVisible(false);
@@ -62,23 +61,12 @@ public class FinalControler {
 		menuInsert.setVisible(true);
 		menuDelete.setVisible(true);
 		
-		inputIndex.setVisible(true);
-		
 		dt = new LinkedList();
 		this.indi = 1;
 		setFixset(0.5);
 		displayPane.getChildren().clear();
 		dt.nodelist.clear();
 		System.out.println("LList");
-//		for (int i=0;i<3;i++) {
-//			newnode = new Node();
-//			newnode.setLabel(newnode.form());
-//			displayPane.getChildren().add(newnode.getLabel());
-//			dt.AddNode(newnode);
-//			offset = 25+(dt.nodelist.size()-1)*(GlobalVar.LABEL_WIDTH+25);
-//			dt.AddAni(newnode,displayPane.getWidth(),displayPane.getHeight()).play();
-//		}
-		
 	}
 	
 	public void initStk() {
@@ -97,10 +85,6 @@ public class FinalControler {
 		dt.nodelist.clear();
 	}
 
-	public void initBtree() {
-		
-	}
-	
 	public void initAvl() {
 		btnInsert.setVisible(true);
 		btnDelete.setVisible(true);
@@ -116,30 +100,82 @@ public class FinalControler {
 		displayPane.getChildren().clear();
 		dt.nodelist.clear();
 		dt.isEmpty();
-		System.out.println("Btree");
+		System.out.println("AVLtree");
 		setOffset(0.5);
-			newnode = new Node();
-			newnode.setData(10);
-			((AVLTree)dt).insert(newnode.getData());
-			
-			newnode.setData(20);
-			((AVLTree)dt).insert(newnode.getData());
-			
-			newnode.setData(30);
-			((AVLTree)dt).insert(newnode.getData());
-			
-			((AVLTree)dt).preorder();
-			((AVLTree)dt).drawNotAni(dt.nodelist,offset,fixset);
-			for(int i=0;i<dt.nodelist.size();i++) {
-				displayPane.getChildren().add(dt.nodelist.get(i).getLabel());
-				if(dt.nodelist.get(i).getArrowl()!=null&&dt.nodelist.get(i).getLeft()!=null)
-				displayPane.getChildren().add(dt.nodelist.get(i).getArrowl());
-				if(dt.nodelist.get(i).getArrowr()!=null&&dt.nodelist.get(i).getRight()!=null)
-				displayPane.getChildren().add(dt.nodelist.get(i).getArrowr());
-			}
+		newnode = new Node();
+		newnode.setData(10);
+		((AVLTree)dt).insert(newnode.getData());
+		
+		newnode.setData(20);
+		((AVLTree)dt).insert(newnode.getData());
+		
+		newnode.setData(30);
+		((AVLTree)dt).insert(newnode.getData());
+		
+		((AVLTree)dt).preorder();
+		
+		System.out.println("\nsize of nodeList: " + dt.nodelist.size());
+		
+		((AVLTree)dt).drawNotAni(dt.nodelist,offset,fixset);
+		for(int i=0;i<dt.nodelist.size();i++) {
+			displayPane.getChildren().add(dt.nodelist.get(i).getLabel());
+			if(dt.nodelist.get(i).getArrowl()!=null&&dt.nodelist.get(i).getLeft()!=null)
+			displayPane.getChildren().add(dt.nodelist.get(i).getArrowl());
+			if(dt.nodelist.get(i).getArrowr()!=null&&dt.nodelist.get(i).getRight()!=null)
+			displayPane.getChildren().add(dt.nodelist.get(i).getArrowr());
+		}		
 	}
 	
-	public static boolean isNumeric(String str) { //kiem tra dau vao co phai so khong
+	public void initBtree() {
+		btnInsert.setVisible(true);
+		btnDelete.setVisible(true);
+		
+		menuInsert.setVisible(false);
+		menuDelete.setVisible(false);
+		
+		inputIndex.setVisible(false);
+		
+		dt = new Btree(3);
+		this.indi = 4;
+		setFixset(0.1);
+		displayPane.getChildren().clear();
+		dt.nodelist.clear();
+		dt.isEmpty();
+		System.out.println("Btree");
+		setOffset(0.5);
+		((Btree)dt).insert(20);
+		((Btree)dt).insert(40);
+		((Btree)dt).insert(10);
+		((Btree)dt).insert(3);
+		((Btree)dt).insert(8);
+		((Btree)dt).insert(29);
+		((Btree)dt).insert(12);
+		((Btree)dt).insert(39);
+		((Btree)dt).insert(9);
+		((Btree)dt).insert(25);
+		((Btree)dt).insert(2);
+		((Btree)dt).insert(59);
+		((Btree)dt).insert(7);
+		((Btree)dt).insert(6);
+		
+		
+		((Btree)dt).ShowAll();
+		((Btree)dt).preoder();
+		
+		System.out.println("\nsize of nodelist: "+dt.nodelist.size());
+		
+		((Btree)dt).drawAni(dt.nodelist, offset, fixset);		
+		
+		for(int i = 0 ; i < dt.nodelist.size(); i++) {
+			displayPane.getChildren().add(dt.nodelist.get(i).getLabel());
+			if(dt.nodelist.get(i).getArrow() != null && dt.nodelist.get(i).getChild().length != 0){
+				displayPane.getChildren().add(dt.nodelist.get(i).getArrow());
+			}			
+		}
+		
+	}
+	
+	public static boolean isNumeric(String str) { //kiem tra xem co phai la so hay khong
 		return str.matches("-?\\d+(\\.\\d+)?"); 
 	}
 	
@@ -152,6 +188,9 @@ public class FinalControler {
 				insertStack();
 				break;
 			case 3: 
+				insertAvlTree();
+				break;
+			case 4:
 				insertBtree();
 				break;
 			default:
@@ -168,7 +207,6 @@ public class FinalControler {
 		.ifPresent(response->alert.close());
 		InputField.clear();
 	}
-	
 	private void insertStack() {
 		String checkInput = InputField.getText();
 		if(checkInput.equals("")) {
@@ -198,38 +236,49 @@ public class FinalControler {
 		}
 		InputField.clear();
 	}
-	
-	private void insertBtree() {
-		System.out.println("insertBtree");
-		String checkInput = InputField.getText();
-		if(checkInput.equals("")) {
-			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You have not entered anything! Please input a number.",ButtonType.OK);
-			alert.showAndWait()	
-			.filter(response -> response == ButtonType.OK)
-			.ifPresent(response->alert.close());
-		}else if(isNumeric(checkInput) == false){
-			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You must enter a number! Please enter again.",ButtonType.OK);
-			alert.showAndWait()	
-			.filter(response -> response == ButtonType.OK)
-			.ifPresent(response->alert.close());
-		}else {
+	private void insertAvlTree() {
+		System.out.println("insertAvlTree");
+		try {
 			int d = Integer.parseInt(InputField.getText());
 			newnode = new Node(d);
 			InputField.clear();
-			displayPane.getChildren().clear();
-			((AVLTree)dt).insert(newnode.getData());
-			((AVLTree)dt).nodelist.clear();
-			((AVLTree)dt).preorder();
-			((AVLTree)dt).drawNotAni(dt.nodelist,offset,fixset);
-			for(int i=0;i<dt.nodelist.size();i++) {
-				displayPane.getChildren().add(dt.nodelist.get(i).getLabel());
-				if(dt.nodelist.get(i).getArrowl()!=null&&dt.nodelist.get(i).getLeft()!=null)
-					displayPane.getChildren().add(dt.nodelist.get(i).getArrowl());
-				if(dt.nodelist.get(i).getArrowr()!=null&&dt.nodelist.get(i).getRight()!=null)
-					displayPane.getChildren().add(dt.nodelist.get(i).getArrowr());
-			}
+		} catch (NumberFormatException | NullPointerException nfe) {
+			
 		}
-		InputField.clear();
+		displayPane.getChildren().clear();
+		((AVLTree)dt).insert(newnode.getData());
+		((AVLTree)dt).nodelist.clear();
+		((AVLTree)dt).preorder();
+		((AVLTree)dt).drawNotAni(dt.nodelist,offset,fixset);
+		for(int i=0;i<dt.nodelist.size();i++) {
+			displayPane.getChildren().add(dt.nodelist.get(i).getLabel());
+			if(dt.nodelist.get(i).getArrowl()!=null&&dt.nodelist.get(i).getLeft()!=null)
+			displayPane.getChildren().add(dt.nodelist.get(i).getArrowl());
+			if(dt.nodelist.get(i).getArrowr()!=null&&dt.nodelist.get(i).getRight()!=null)
+			displayPane.getChildren().add(dt.nodelist.get(i).getArrowr());
+		}
+	}
+	
+	private void insertBtree() {
+		System.out.println("InsertBtree");
+		int d = 0;
+		try {
+			d = Integer.parseInt(InputField.getText());
+			InputField.clear();
+		} catch (NumberFormatException | NullPointerException nfe) {
+			
+		}
+		displayPane.getChildren().clear();
+		((Btree)dt).insert(d);
+		((Btree)dt).nodelist.clear();
+		((Btree)dt).preoder();
+		((Btree)dt).drawAni(dt.nodelist, offset - 50, fixset);
+		for(int i = 0 ; i < dt.nodelist.size(); i++) {
+			displayPane.getChildren().add(dt.nodelist.get(i).getLabel());
+//			if(dt.nodelist.get(i).getArrow() != null && dt.nodelist.get(i).getChild().length != 0){
+//				displayPane.getChildren().add(dt.nodelist.get(i).getArrow());
+//			}			
+		}
 	}
 	
 	public void insertHead() {
@@ -253,11 +302,12 @@ public class FinalControler {
 			int d = Integer.parseInt(InputField.getText());
 			newnode = new Node(d);
 			dt.nodelist.addFirst(newnode);
+			System.out.println(dt.nodelist.get(dt.sizeDt() - 1));
 			newnode.setLabel(newnode.form());
 			displayPane.getChildren().add(newnode.getLabel());
 			fixset = displayPane.getWidth()/2 - GlobalVar.LABEL_WIDTH/2;
 			offset= displayPane.getHeight()-(dt.nodelist.size()*(GlobalVar.LABEL_HEIGHT+25));
-			dt.AddAniFirst(newnode,displayPane.getWidth(),displayPane.getHeight()).play();
+			dt.AddAni(newnode,displayPane.getWidth(),displayPane.getHeight()).play();
 			this.reInsertFirst();
 		}
 		InputField.clear();
@@ -284,11 +334,12 @@ public class FinalControler {
 			int d = Integer.parseInt(InputField.getText());
 			newnode = new Node(d);
 			dt.nodelist.addLast(newnode);
+			System.out.println(dt.nodelist.get(dt.sizeDt() - 2));
 			newnode.setLabel(newnode.form());
 			displayPane.getChildren().add(newnode.getLabel());
 			fixset = displayPane.getWidth()/2 - GlobalVar.LABEL_WIDTH/2;
 			offset= displayPane.getHeight()-(dt.nodelist.size()*(GlobalVar.LABEL_HEIGHT+25));
-			dt.AddAniFirst(newnode,displayPane.getWidth(),displayPane.getHeight()).play();
+			dt.AddAni(newnode,displayPane.getWidth(),displayPane.getHeight()).play();
 			this.reInsertFirst();
 		}
 		InputField.clear();
@@ -327,7 +378,7 @@ public class FinalControler {
 			displayPane.getChildren().add(newnode.getLabel());
 			fixset = displayPane.getWidth()/2 - GlobalVar.LABEL_WIDTH/2;
 			offset= displayPane.getHeight()-(dt.nodelist.size()*(GlobalVar.LABEL_HEIGHT+25));
-			dt.AddAniFirst(newnode,displayPane.getWidth(),displayPane.getHeight()).play();
+			dt.AddAni(newnode,displayPane.getWidth(),displayPane.getHeight()).play();
 			this.reInsertFirst();
 		}
 		InputField.clear();
@@ -385,19 +436,19 @@ public class FinalControler {
 	
 	public void deleteAnyPosition() {
 		String checkInput = InputField.getText();
-		String checkInputIndex = inputIndex.getText();
-		
-		if((checkInput.equals("") == true && checkInputIndex.equals("") == true) || (checkInput.equals("") == false && checkInputIndex.equals("") == false)) {
-			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You must enter 1 field completely.",ButtonType.OK);
+		if(checkInput.equals("") == true) {
+			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You can only input one field.",ButtonType.OK);
 			alert.showAndWait()	
 			.filter(response -> response == ButtonType.OK)
 			.ifPresent(response->alert.close());
-		}else if((isNumeric(checkInput) == false && checkInputIndex.equals("") == true) || (checkInput.equals("") == true && isNumeric(checkInputIndex) == false)){
+			InputField.clear();
+		}else if(isNumeric(checkInput) == false){
 			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You must enter a number! Please enter again.",ButtonType.OK);
 			alert.showAndWait()	
 			.filter(response -> response == ButtonType.OK)
 			.ifPresent(response->alert.close());
-		}else if(checkInput.equals("") == false && checkInputIndex.equals("") == true){		
+			InputField.clear();
+		}else{		
 			int d = Integer.parseInt(InputField.getText());
 			int findIndex = dt.findIndexNode(d);
 			if(findIndex == -1) {
@@ -416,33 +467,56 @@ public class FinalControler {
 				dt.DelAni(newnode).play();
 				this.reArrangeLL();
 			}
-		}else if(checkInput.equals("") == true && checkInputIndex.equals("") == false) {
-			int d = Integer.parseInt(checkInputIndex);
-			newnode = dt.nodelist.get(d);
-			System.out.println("Delele");
-			dt.removeNode(newnode);
-			dt.DelAni(newnode).setOnFinished(finishHim ->{
-				displayPane.getChildren().remove(newnode.getLabel());
-			}
-					);
-			dt.DelAni(newnode).play();
-			this.reArrangeLL();
+			InputField.clear();
 		}
-		InputField.clear();
-		inputIndex.clear();
+		
 	}
 	
 	public void delete() throws InterruptedException {
 		switch (this.indi) {
 		case 1:
+			deleteLL();
 			break;
 		case 2:
 			deleteStk();
 			break;
 		case 3:
+			deleteAvlTree();
+			break;
+		case 4:
 			deleteBtree();
 			break;
 		}
+			
+	}
+	
+	private void deleteLL() throws InterruptedException {
+		try {
+			int d = Integer.parseInt(InputField.getText());
+			InputField.clear();
+			newnode = dt.findNode(d);
+			
+		} catch (NumberFormatException | NullPointerException nfe) {
+			newnode = dt.nodelist.getFirst();
+		}
+		if (newnode == null) {
+			Alert alert= new Alert(Alert.AlertType.INFORMATION,"Error data not in list",ButtonType.OK);
+			alert.showAndWait()
+			.filter(response -> response == ButtonType.OK)
+			.ifPresent(response->alert.close());
+		}
+		else {
+			System.out.println("Delele");
+			dt.removeNode(newnode);
+			dt.DelAni(newnode).setOnFinished(finishHim ->{
+					displayPane.getChildren().remove(newnode.getLabel());
+				}
+			);
+			dt.DelAni(newnode).play();
+			this.reArrangeLL();
+		}
+		
+
 	}
 	
 	private void deleteStk() {
@@ -469,40 +543,53 @@ public class FinalControler {
 		}
 	}
 	
-	private void deleteBtree() {  //mỗi lần xóa sẽ built lại từ đầu
+
+	private void deleteAvlTree() {
 		System.out.println("deleteNode");
-		String checkInput = InputField.getText();
-		if(checkInput.equals("")) {
-			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You have not entered anything! Please input a number.",ButtonType.OK);
-			alert.showAndWait()	
-			.filter(response -> response == ButtonType.OK)
-			.ifPresent(response->alert.close());
-		}else if(isNumeric(checkInput) == false){
-			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You must enter a number! Please enter again.",ButtonType.OK);
-			alert.showAndWait()	
-			.filter(response -> response == ButtonType.OK)
-			.ifPresent(response->alert.close());
-		}else {
+		try {
 			int d = Integer.parseInt(InputField.getText());
 			newnode = new Node(d);
 			InputField.clear();
-			displayPane.getChildren().clear(); 			//lệnh xóa toàn bộ cây
-			((AVLTree)dt).delete(newnode.getData());
-			dt.nodelist.clear();
-			((AVLTree)dt).preorder();
-			((AVLTree)dt).drawNotAni(dt.nodelist,offset,fixset);    //cập nhật lại cây khi xóa
-			System.out.println(dt.nodelist.size());
-			for(int i=0;i<dt.nodelist.size();i++) {
-				displayPane.getChildren().add(dt.nodelist.get(i).getLabel());
-				
-				if(dt.nodelist.get(i).getArrowl() != null && dt.nodelist.get(i).getLeft() != null)
-					displayPane.getChildren().add(dt.nodelist.get(i).getArrowl());
-				
-				if(dt.nodelist.get(i).getArrowr() != null && dt.nodelist.get(i).getRight() != null)
-					displayPane.getChildren().add(dt.nodelist.get(i).getArrowr());
-			}
+		} catch (NumberFormatException | NullPointerException nfe) {
+			
 		}
-		InputField.clear();
+		displayPane.getChildren().clear();
+		((AVLTree)dt).delete(newnode.getData());
+		dt.nodelist.clear();
+		((AVLTree)dt).preorder();
+		((AVLTree)dt).drawNotAni(dt.nodelist,offset,fixset);
+		System.out.println(dt.nodelist.size());
+		for(int i=0;i<dt.nodelist.size();i++) {
+			displayPane.getChildren().add(dt.nodelist.get(i).getLabel());
+			if(dt.nodelist.get(i).getArrowl()!=null&&dt.nodelist.get(i).getLeft()!=null)
+			displayPane.getChildren().add(dt.nodelist.get(i).getArrowl());
+			if(dt.nodelist.get(i).getArrowr()!=null&&dt.nodelist.get(i).getRight()!=null)
+			displayPane.getChildren().add(dt.nodelist.get(i).getArrowr());
+		}
+
+	}
+	
+	private void deleteBtree() {
+		System.out.println("deleteNode");
+		int d = 0;
+		try {
+			d = Integer.parseInt(InputField.getText());
+			InputField.clear();
+		} catch (NumberFormatException | NullPointerException nfe) {
+			
+		}
+		displayPane.getChildren().clear();
+		((Btree)dt).Remove(d);
+		dt.nodelist.clear();
+		((Btree)dt).preoder();
+		((Btree)dt).drawAni(dt.nodelist, offset, fixset);
+		for(int i = 0 ; i < dt.nodelist.size(); i++) {
+			displayPane.getChildren().add(dt.nodelist.get(i).getLabel());
+//			if(dt.nodelist.get(i).getArrow() != null && dt.nodelist.get(i).getChild().length != 0){
+//				displayPane.getChildren().add(dt.nodelist.get(i).getArrow());
+//			}			
+		}
+		
 	}
 	
 	public void reArrangeLL() {
@@ -533,6 +620,9 @@ public class FinalControler {
 		}
 	}
 
+
+
+	
 	public void exit(ActionEvent event){
 		Platform.exit();
 	}

@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+
+import application.GlobalVar;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
@@ -58,7 +61,6 @@ private Node root;
 	
 	public void insert(int key) {
 		Node r = root;
-		AddNode(r);
 		if(r.getN() ==  2 * T - 1) {
 			Node s =  new Node();
 			root = s;
@@ -167,6 +169,11 @@ private Node root;
 				for (int i = pos; i < x.getN(); i++) {
 					if(i != 2*T -2) {
 						x.setChild(i, x.getChild(i+1));
+					}
+				}
+				for(int i = pos + 1; i < x.getN() + 1; i ++) {
+					if( i != 2 * T - 1) {
+						x.setChild(i, x.getChild( + 1));
 					}
 				}
 				x.setN(x.getN() -1);
@@ -289,14 +296,21 @@ private Node root;
 	private void Show(Node x) {
 		assert(x == null);
 		for (int i = 0; i < x.getN(); i++) {
-			System.out.println(x.getKey(i) + " ");
+			System.out.print(x.getKey(i) + " ");
 		}
 		if(!x.isLeaf()) {
+			System.out.println("\n\n");
 			for(int i = 0 ;  i< x.getN() +1; i++) {
+				System.out.print("          ");
 				Show(x.getChild(i));
 			}
 		}
 	}
+	
+	public void testShow() {
+		System.out.println(root.getChild(0).getN());
+	}
+	
 	
 	public boolean isEmpty() {
 		return root == null;
@@ -313,14 +327,66 @@ private Node root;
 		this.root = root;
 	}
 	
-	
-	public void drawAni(java.util.LinkedList<Node> nodelist, double offsetX, double offsetY) {
-		if(nodelist.size() == 0) return;
-		Node  x = nodelist.get(0);
-		x.setLabel(x.form(x.getKey(), 2*T -1));
-		AddAni(x, offsetX, offsetY).play();
+	public void preoder() {
+		preoder(root);
 	}
 	
+	private void preoder(Node x) {
+		if(x != null) {
+			nodelist.add(x);
+			for(int i = 0; i < 2*T - 1; i ++){
+				preoder(x.getChild(i));
+			}
+		}
+	}
+	
+	public void drawAni(java.util.LinkedList<Node> nodelist1, double offsetX, double offsetY) {
+		if(nodelist.size() == 0) return;
+		Node x = nodelist1.get(0);
+		x.setLabel(x.form(x.getKey(), x.getN()));
+		AddAni(x, offsetX, offsetY).play();
+		if(x.isLeaf()) {
+			return;
+		}else {
+			ArrayList<java.util.LinkedList<Node>> list = new ArrayList<java.util.LinkedList<Node>>();
+			
+			for(int i = 0; i < x.getN() + 1; i++) {
+				java.util.LinkedList<Node> nodeL = new java.util.LinkedList<Node>();
+				nodeL.add(x.getChild(i));	
+				list.add(nodeL);
+			}
+			for(int i = 0; i < x.getN() + 1; i++) {
+				float k = 0;
+				if( T == 2) {k = 500;}
+				else if( T == 3) k = 200;
+				if((x.getN() + 1) % 2 == 0) {
+					if(nodelist1.size() == 1) {
+						drawAni(list.get(i), offsetX + 150*(i  - x.getN()/2) - 75 , offsetY + 150);
+					}else {
+						drawAni(list.get(i), offsetX + k*(i - x.getN()/2) -k/2 , offsetY + 150);
+					}
+							
+				}
+				else {
+					if(nodelist1.size() == 1) {
+						drawAni(list.get(i), offsetX + 150*(i  - x.getN()/2), offsetY + 150);
+					}else {
+						drawAni(list.get(i), offsetX + k*(i - x.getN()/2), offsetY + 150);
+					}
+				}
+				
+//				Arrow  arrowl = new Arrow(offsetX+GlobalVar.LABEL_WIDTH/2,offsetY+GlobalVar.LABEL_HEIGHT,  offsetX + 150*(i + 1 - x.getN())  , offsetY + 150);
+//				nodelist1.get(0).setArrowl(arrowl);
+//				Arrow  arrowr = new Arrow(offsetX+GlobalVar.LABEL_WIDTH/2,offsetY+GlobalVar.LABEL_HEIGHT,  offsetX + 150*(i + 1 - x.getN()) - 100 , offsetY + 150);
+//				nodelist1.get(0).setArrowr(arrowr);
+//				System.out.println("so luong" + list.size());
+//				for(int j = 0; j < x.getN() + 1; j++) {
+//					Arrow arrow = new Arrow(offsetX + GlobalVar.LABEL_WIDTH/2,offsetY+GlobalVar.LABEL_HEIGHT,  offsetX + 10*(j + 1 - x.getN())  , offsetY + 150);
+//					x.setArrow(arrow);
+//				}
+			}
+		}
+	}
 	
 	public SequentialTransition AddAni(Node node, double offsetX, double offsetY) {
 		SequentialTransition st = new SequentialTransition();

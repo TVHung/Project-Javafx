@@ -43,7 +43,8 @@ public class Node {
 	//for draw
 	private Label label;		
 	private Arrow arrowl;		
-	private Arrow arrowr;		
+	private Arrow arrowr;	
+	private Arrow arrow;
 	
 	private Random 	rand = new Random();
 	
@@ -53,6 +54,14 @@ public class Node {
 
 	public void setData(int data) {
 		this.data = data;
+	}
+	
+	public Arrow getArrow() {
+		return arrow;
+	}
+
+	public void setArrow(Arrow arrow) {
+		this.arrow = arrow;
 	}
 
 	public Arrow getArrowl() {
@@ -146,6 +155,10 @@ public class Node {
 	public void setChild(Node [] child) {
 		this.child = child;
 	}
+	
+	public Node[] getChild() {
+		return child;
+	}
 
 	public boolean isLeaf() {
 		return leaf;
@@ -205,12 +218,12 @@ public class Node {
 			else str += key[i] + " | ";
 		}
 		label.setText(str);
-		label.setLayoutX(-100);
-		label.setLayoutY(10);
+		label.setLayoutX(GlobalVar.PRIMARY_X);
+		label.setLayoutY(GlobalVar.PRIMARY_Y);
 		label.setPrefHeight(GlobalVar.LABEL_HEIGHT);
-		label.setPrefWidth(GlobalVar.LABEL_WIDTH + 100);
+		label.setPrefWidth(GlobalVar.LABEL_WIDTH);
 		label.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
-		label.setFont(new Font(20));
+		label.setFont(new Font(10));
 		label.setAlignment(Pos.CENTER);
 		
 		return label;

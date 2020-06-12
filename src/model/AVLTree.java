@@ -222,8 +222,9 @@ public class AVLTree extends Datatype
 	{
 		if (nodelist1.size()==0) 
 			return;
-		java.util.LinkedList<Node> nodelist2=new java.util.LinkedList<Node>();
-		java.util.LinkedList<Node> nodelist3=new java.util.LinkedList<Node>();
+		java.util.LinkedList<Node> nodelist2 = new java.util.LinkedList<Node>();
+		java.util.LinkedList<Node> nodelist3 = new java.util.LinkedList<Node>();
+		
 		nodelist1.get(0).setLabel(nodelist1.get(0).form());
 		
 		AddAni(nodelist1.get(0),offsetX,offsetY).play();
