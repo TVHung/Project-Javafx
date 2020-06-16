@@ -41,6 +41,7 @@ public class FinalControler {
 	Node newnode;
 	double offset,fixset;
 	int indi = 0;
+	int numLL = 0;
 	int value;
 	Datatype dt;
 	LinkedList ll = new LinkedList();
@@ -274,6 +275,7 @@ public class FinalControler {
 		}
 		InputField.clear();
 	}
+	
 	private void insertAvlTree() {
 		System.out.println("insertAvlTree");
 		try {
@@ -319,133 +321,125 @@ public class FinalControler {
 		}
 	}
 	
-	public void insertHead() {
+	public void insertLinkedList() {
+		boolean checkIndex = true;
 		if(checkInputNumber() == true){
 			int d = Integer.parseInt(InputField.getText());
 			newnode = new Node(d);
-			dt.nodelist.addFirst(newnode);
-			System.out.println(dt.nodelist.get(dt.sizeDt() - 1));
-			newnode.setLabel(newnode.form());
-			displayPane.getChildren().add(newnode.getLabel());
-			fixset = displayPane.getWidth()/2 - GlobalVar.LABEL_WIDTH/2;
-			offset= displayPane.getHeight()-(dt.nodelist.size()*(GlobalVar.LABEL_HEIGHT+25));
-			dt.AddAni(newnode,displayPane.getWidth(),displayPane.getHeight()).play();
-			this.reInsertFirst();
-		}
-		InputField.clear();
-	}
-	
-	public void insertLast() {
-		if(checkInputNumber() == true){
-			int d = Integer.parseInt(InputField.getText());
-			newnode = new Node(d);
-			dt.nodelist.addLast(newnode);
-			System.out.println(dt.nodelist.get(dt.sizeDt() - 2));
-			newnode.setLabel(newnode.form());
-			displayPane.getChildren().add(newnode.getLabel());
-			fixset = displayPane.getWidth()/2 - GlobalVar.LABEL_WIDTH/2;
-			offset= displayPane.getHeight()-(dt.nodelist.size()*(GlobalVar.LABEL_HEIGHT+25));
-			dt.AddAni(newnode,displayPane.getWidth(),displayPane.getHeight()).play();
-			this.reInsertFirst();
-		}
-		InputField.clear();
-	}
-	
-	public void insertAnyPosition(){
-		if(checkInputNumber() == true && checkInputIndex() == true){
-			int d = Integer.parseInt(InputField.getText());
-			int position = Integer.parseInt(inputIndex.getText());
-			newnode = new Node(d);
-			dt.nodelist.add(position, newnode);
-			newnode.setLabel(newnode.form());
-			displayPane.getChildren().add(newnode.getLabel());
-			fixset = displayPane.getWidth()/2 - GlobalVar.LABEL_WIDTH/2;
-			offset= displayPane.getHeight()-(dt.nodelist.size()*(GlobalVar.LABEL_HEIGHT+25));
-			dt.AddAni(newnode,displayPane.getWidth(),displayPane.getHeight()).play();
-			this.reInsertFirst();
+			switch (numLL) {
+			case 1:
+				dt.nodelist.addFirst(newnode);
+				break;
+			case 2:
+				dt.nodelist.addLast(newnode);
+				break;
+			case 3:
+				if(checkInputIndex() == true) {
+					int position = Integer.parseInt(inputIndex.getText());
+					dt.nodelist.add(position, newnode);	
+				}else {
+					checkIndex = false;
+				}
+				break;
+			default:
+				break;
+			}
+			if(checkIndex == true) {
+				System.out.println(dt.nodelist.get(dt.sizeDt() - 1));
+				newnode.setLabel(newnode.form());
+				displayPane.getChildren().add(newnode.getLabel());
+				fixset = displayPane.getWidth()/2 - GlobalVar.LABEL_WIDTH/2;
+				offset= displayPane.getHeight()-(dt.nodelist.size()*(GlobalVar.LABEL_HEIGHT+25));
+				dt.AddAni(newnode,displayPane.getWidth(),displayPane.getHeight()).play();
+				this.reInsertFirst();				
+			}
 		}
 		InputField.clear();
 		inputIndex.clear();
+		
+	}
+	
+	public void insertHead() {
+		numLL = 1;
+		insertLinkedList();
+	}
+	
+	public void insertLast() {
+		numLL = 2;
+		insertLinkedList();
+	}
+	
+	public void insertAnyPosition(){
+		numLL = 3;
+		insertLinkedList();
+	}
+	
+	public void deleteLinkedList() {
+		boolean checkDelete = true;
+    	if (dt.isEmpty()) {
+    		Alert alert= new Alert(Alert.AlertType.INFORMATION,"LinkedList is empty",ButtonType.OK);
+    		alert.showAndWait()
+    		.filter(response -> response == ButtonType.OK)
+    		.ifPresent(response->alert.close());
+    	}else{
+    		System.out.println("Delele");
+    		switch (numLL) {
+			case 1:
+				newnode = dt.nodelist.getFirst();
+				break;
+			case 2:
+				newnode = dt.nodelist.getLast();    
+				break;
+			case 3:
+				if(checkInputNumber() == true) {
+					int d = Integer.parseInt(InputField.getText());
+					int findIndex = dt.findIndexNode(d);
+					if(findIndex == -1) {
+						Alert alert= new Alert(Alert.AlertType.INFORMATION,"Can't find node to delete!",ButtonType.OK);
+						alert.showAndWait()
+						.filter(response -> response == ButtonType.OK)
+						.ifPresent(response->alert.close());
+						checkDelete = false;
+					}else {
+						newnode = dt.nodelist.get(findIndex);
+					}
+				}
+				break;
+			default:
+				break;
+			}
+    		if(checkDelete == true) {
+    			dt.removeNode(newnode);
+    			dt.DelAni(newnode).setOnFinished(finishHim ->{
+    				displayPane.getChildren().remove(newnode.getLabel());
+    			}
+    					);
+    			dt.DelAni(newnode).play();
+    			this.reArrangeLL();
+    		}
+    	}
+    	InputField.clear();
+    	
 	}
 	
 	public void deleteHead() {
-		try {      
-			newnode = dt.nodelist.getFirst();
-        } catch (ArithmeticException e) {
-
-        }finally {
-        	if (dt.isEmpty()) {
-        		Alert alert= new Alert(Alert.AlertType.INFORMATION,"LinkedList is empty",ButtonType.OK);
-        		alert.showAndWait()
-        		.filter(response -> response == ButtonType.OK)
-        		.ifPresent(response->alert.close());
-        	}else{
-        		System.out.println("Delele");
-        		dt.removeNode(newnode);
-        		dt.DelAni(newnode).setOnFinished(finishHim ->{
-        			displayPane.getChildren().remove(newnode.getLabel());
-        		}
-        				);
-        		dt.DelAni(newnode).play();
-        		this.reArrangeLL();
-        	}
-        }
+		numLL = 1;
+		deleteLinkedList();
 	}
 	
 	public void deleteLast() {
-		try {
-			newnode = dt.nodelist.getLast();            
-        } catch (ArithmeticException e) {
-
-        }finally {
-        	if (dt.isEmpty()) {
-        		Alert alert= new Alert(Alert.AlertType.INFORMATION,"LinkedList is empty",ButtonType.OK);
-        		alert.showAndWait()
-        		.filter(response -> response == ButtonType.OK)
-        		.ifPresent(response->alert.close());
-        	}
-        	else {
-        		System.out.println("Delele");
-        		dt.removeNode(newnode);
-        		dt.DelAni(newnode).setOnFinished(finishHim ->{
-        			displayPane.getChildren().remove(newnode.getLabel());
-        		}
-        				);
-        		dt.DelAni(newnode).play();
-        		this.reArrangeLL();
-        	}
-		}
+		numLL = 2;
+		deleteLinkedList();
 	}
 	
 	public void deleteAnyPosition() {
-		if(checkInputNumber() == true){		
-			int d = Integer.parseInt(InputField.getText());
-			int findIndex = dt.findIndexNode(d);
-			if(findIndex == -1) {
-				Alert alert= new Alert(Alert.AlertType.INFORMATION,"Can't find node to delete!",ButtonType.OK);
-				alert.showAndWait()
-				.filter(response -> response == ButtonType.OK)
-				.ifPresent(response->alert.close());
-			}else {
-				newnode = dt.nodelist.get(findIndex);
-				System.out.println("Delele");
-				dt.removeNode(newnode);
-				dt.DelAni(newnode).setOnFinished(finishHim ->{
-					displayPane.getChildren().remove(newnode.getLabel());
-				}
-						);
-				dt.DelAni(newnode).play();
-				this.reArrangeLL();
-			}
-			InputField.clear();
-		}
-		
+		numLL = 3;
+		deleteLinkedList();
 	}
 	
 	public void delete() throws InterruptedException {
 		switch (this.indi) {
 		case 1:
-			deleteLL();
 			break;
 		case 2:
 			deleteStk();
@@ -460,35 +454,7 @@ public class FinalControler {
 			
 	}
 	
-	private void deleteLL() throws InterruptedException {
-		try {
-			int d = Integer.parseInt(InputField.getText());
-			InputField.clear();
-			newnode = dt.findNode(d);
-			
-		} catch (NumberFormatException | NullPointerException nfe) {
-			newnode = dt.nodelist.getFirst();
-		}
-		if (newnode == null) {
-			Alert alert= new Alert(Alert.AlertType.INFORMATION,"Error data not in list",ButtonType.OK);
-			alert.showAndWait()
-			.filter(response -> response == ButtonType.OK)
-			.ifPresent(response->alert.close());
-		}
-		else {
-			System.out.println("Delele");
-			dt.removeNode(newnode);
-			dt.DelAni(newnode).setOnFinished(finishHim ->{
-					displayPane.getChildren().remove(newnode.getLabel());
-				}
-			);
-			dt.DelAni(newnode).play();
-			this.reArrangeLL();
-		}
-		
 
-	}
-	
 	private void deleteStk() {
 		try {
 			newnode = dt.nodelist.getFirst();            
@@ -513,7 +479,6 @@ public class FinalControler {
 		}
 	}
 	
-
 	private void deleteAvlTree() {
 		System.out.println("deleteNode");
 		try {
@@ -590,9 +555,6 @@ public class FinalControler {
 		}
 	}
 
-
-
-	
 	public void exit(ActionEvent event){
 		Platform.exit();
 	}
