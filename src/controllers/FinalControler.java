@@ -61,6 +61,8 @@ public class FinalControler {
 		menuInsert.setVisible(true);
 		menuDelete.setVisible(true);
 		
+		inputIndex.setVisible(true);
+		
 		dt = new LinkedList();
 		this.indi = 1;
 		setFixset(0.5);
@@ -207,24 +209,60 @@ public class FinalControler {
 		.ifPresent(response->alert.close());
 		InputField.clear();
 	}
-	private void insertStack() {
+	
+	
+	private boolean checkInputNumber() {
 		String checkInput = InputField.getText();
 		if(checkInput.equals("")) {
 			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You have not entered anything! Please input a number.",ButtonType.OK);
 			alert.showAndWait()	
 			.filter(response -> response == ButtonType.OK)
 			.ifPresent(response->alert.close());
+			return false;
 		}else if(isNumeric(checkInput) == false){
 			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You must enter a number! Please enter again.",ButtonType.OK);
 			alert.showAndWait()	
 			.filter(response -> response == ButtonType.OK)
 			.ifPresent(response->alert.close());
+			return false;
 		}else if (dt.isFull()) {
 			Alert alert= new Alert(Alert.AlertType.INFORMATION,"Stack is full",ButtonType.OK);
 			alert.showAndWait()	
 			.filter(response -> response == ButtonType.OK)
 			.ifPresent(response->alert.close());
-		}else{
+			return false;
+		}
+		
+		return true;
+	}
+	
+	private boolean checkInputIndex() {
+		String checkInputIndex = inputIndex.getText();
+		
+		if(checkInputIndex.equals("") == true) {
+			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You must enter 2 fields completely! Please input again.",ButtonType.OK);
+			alert.showAndWait()	
+			.filter(response -> response == ButtonType.OK)
+			.ifPresent(response->alert.close());
+			return false;
+		}else if(Integer.parseInt(inputIndex.getText()) > dt.sizeDt()) {
+			Alert alert= new Alert(Alert.AlertType.INFORMATION,"Input position exceeds the number of elements in the linked list! Please input again.",ButtonType.OK);
+			alert.showAndWait()	
+			.filter(response -> response == ButtonType.OK)
+			.ifPresent(response->alert.close());
+			return false;
+		}else if(isNumeric(checkInputIndex) == false){
+			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You must enter a number! Please enter again.",ButtonType.OK);
+			alert.showAndWait()	
+			.filter(response -> response == ButtonType.OK)
+			.ifPresent(response->alert.close());
+			return false;
+		}
+		return true;
+	}
+	
+	private void insertStack() {
+		if(checkInputNumber() == true){
 			int d = Integer.parseInt(InputField.getText());
 			newnode = new Node(d);
 			dt.AddNode(newnode);
@@ -282,23 +320,7 @@ public class FinalControler {
 	}
 	
 	public void insertHead() {
-		String checkInput = InputField.getText();
-		if(checkInput.equals("")) {
-			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You have not entered anything! Please input a number.",ButtonType.OK);
-			alert.showAndWait()	
-			.filter(response -> response == ButtonType.OK)
-			.ifPresent(response->alert.close());
-		}else if(isNumeric(checkInput) == false){
-			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You must enter a number! Please enter again.",ButtonType.OK);
-			alert.showAndWait()	
-			.filter(response -> response == ButtonType.OK)
-			.ifPresent(response->alert.close());
-		}else if (dt.isFull()) {
-			Alert alert= new Alert(Alert.AlertType.INFORMATION,"LinkedList is full",ButtonType.OK);
-			alert.showAndWait()	
-			.filter(response -> response == ButtonType.OK)
-			.ifPresent(response->alert.close());
-		}else{
+		if(checkInputNumber() == true){
 			int d = Integer.parseInt(InputField.getText());
 			newnode = new Node(d);
 			dt.nodelist.addFirst(newnode);
@@ -314,23 +336,7 @@ public class FinalControler {
 	}
 	
 	public void insertLast() {
-		String checkInput = InputField.getText();
-		if(checkInput.equals("")) {
-			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You have not entered anything! Please input a number.",ButtonType.OK);
-			alert.showAndWait()	
-			.filter(response -> response == ButtonType.OK)
-			.ifPresent(response->alert.close());
-		}else if(isNumeric(checkInput) == false){
-			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You must enter a number! Please enter again.",ButtonType.OK);
-			alert.showAndWait()	
-			.filter(response -> response == ButtonType.OK)
-			.ifPresent(response->alert.close());
-		}else if (dt.isFull()) {
-			Alert alert= new Alert(Alert.AlertType.INFORMATION,"LinkedList is full",ButtonType.OK);
-			alert.showAndWait()	
-			.filter(response -> response == ButtonType.OK)
-			.ifPresent(response->alert.close());
-		}else{
+		if(checkInputNumber() == true){
 			int d = Integer.parseInt(InputField.getText());
 			newnode = new Node(d);
 			dt.nodelist.addLast(newnode);
@@ -346,30 +352,7 @@ public class FinalControler {
 	}
 	
 	public void insertAnyPosition(){
-		String checkInput = InputField.getText();
-		String checkInputIndex = inputIndex.getText();
-	
-		if(checkInput.equals("") == true || checkInputIndex.equals("") == true) {
-			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You must enter 2 fields completely! Please input again.",ButtonType.OK);
-			alert.showAndWait()	
-			.filter(response -> response == ButtonType.OK)
-			.ifPresent(response->alert.close());
-		}else if(Integer.parseInt(inputIndex.getText()) > dt.sizeDt()) {
-			Alert alert= new Alert(Alert.AlertType.INFORMATION,"Input position exceeds the number of elements in the linked list! Please input again.",ButtonType.OK);
-			alert.showAndWait()	
-			.filter(response -> response == ButtonType.OK)
-			.ifPresent(response->alert.close());
-		}else if(isNumeric(checkInput) == false || isNumeric(checkInputIndex) == false){
-			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You must enter a number! Please enter again.",ButtonType.OK);
-			alert.showAndWait()	
-			.filter(response -> response == ButtonType.OK)
-			.ifPresent(response->alert.close());
-		}else if (dt.isFull()) {
-			Alert alert= new Alert(Alert.AlertType.INFORMATION,"LinkedList is full",ButtonType.OK);
-			alert.showAndWait()	
-			.filter(response -> response == ButtonType.OK)
-			.ifPresent(response->alert.close());
-		}else{
+		if(checkInputNumber() == true && checkInputIndex() == true){
 			int d = Integer.parseInt(InputField.getText());
 			int position = Integer.parseInt(inputIndex.getText());
 			newnode = new Node(d);
@@ -435,20 +418,7 @@ public class FinalControler {
 	}
 	
 	public void deleteAnyPosition() {
-		String checkInput = InputField.getText();
-		if(checkInput.equals("") == true) {
-			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You can only input one field.",ButtonType.OK);
-			alert.showAndWait()	
-			.filter(response -> response == ButtonType.OK)
-			.ifPresent(response->alert.close());
-			InputField.clear();
-		}else if(isNumeric(checkInput) == false){
-			Alert alert= new Alert(Alert.AlertType.INFORMATION,"You must enter a number! Please enter again.",ButtonType.OK);
-			alert.showAndWait()	
-			.filter(response -> response == ButtonType.OK)
-			.ifPresent(response->alert.close());
-			InputField.clear();
-		}else{		
+		if(checkInputNumber() == true){		
 			int d = Integer.parseInt(InputField.getText());
 			int findIndex = dt.findIndexNode(d);
 			if(findIndex == -1) {
